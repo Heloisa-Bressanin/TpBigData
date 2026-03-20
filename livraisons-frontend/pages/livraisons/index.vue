@@ -2,6 +2,7 @@
 import { statutConfig, type Livraison } from '~/composables/useLivraisons'
 
 const { getAll, getByStatut, getByLivreur, getStatutColis, updateStatut, remove } = useLivraisons()
+const toast = useToast()
 
 const filtreStatut = ref('')
 const filtreLivreur = ref('')
@@ -36,6 +37,7 @@ async function rechercherStatutColis() {
     resultStatutColis.value = await getStatutColis(searchColisId.value)
   } catch {
     resultStatutColis.value = null
+    toast.add({ title: 'Colis introuvable', description: `Aucun colis avec l'ID ${searchColisId.value}`, color: 'red', icon: 'i-heroicons-magnifying-glass' })
   } finally {
     loadingStatut.value = false
   }
@@ -73,14 +75,24 @@ function ouvrirModal(l: Livraison) {
 
 async function sauvegarderStatut() {
   if (!livraisonSelectionnee.value) return
-  await updateStatut(livraisonSelectionnee.value.colisId, nouveauStatut.value)
-  modalOpen.value = false
-  await refresh()
+  try {
+    await updateStatut(livraisonSelectionnee.value.colisId, nouveauStatut.value)
+    toast.add({ title: 'Statut mis à jour', description: `${livraisonSelectionnee.value.colisId} → ${nouveauStatut.value}`, color: 'green', icon: 'i-heroicons-check-circle' })
+    modalOpen.value = false
+    await refresh()
+  } catch {
+    toast.add({ title: 'Erreur', description: 'Impossible de mettre à jour le statut', color: 'red', icon: 'i-heroicons-x-circle' })
+  }
 }
 
 async function supprimerLivraison(id: string) {
-  await remove(id)
-  await refresh()
+  try {
+    await remove(id)
+    toast.add({ title: 'Livraison supprimée', color: 'orange', icon: 'i-heroicons-trash' })
+    await refresh()
+  } catch {
+    toast.add({ title: 'Erreur', description: 'Impossible de supprimer la livraison', color: 'red', icon: 'i-heroicons-x-circle' })
+  }
 }
 
 function formatDate(ts: string) {
