@@ -1,2 +1,0 @@
-mongoimport --db livraisons_db --collection livraisons \
-  --file src/main/resources/data/livraisons.json --jsonArray

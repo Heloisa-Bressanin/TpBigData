@@ -2,7 +2,9 @@ package com.livraison.service;
 
 import com.livraison.dao.CacheDAO;
 import com.livraison.dao.LivraisonDAO;
+import com.livraison.dao.StatsDAO;
 import com.livraison.model.Livraison;
+import com.livraison.model.LivreurStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import java.util.Optional;
 
 @Service
 public class LivraisonService {
+
+    @Autowired
+    private StatsDAO statsDAO;
 
     @Autowired
     private LivraisonDAO livraisonDAO;
@@ -80,5 +85,9 @@ public class LivraisonService {
 
     public long countByStatut(String statut) {
         return livraisonDAO.countByStatut(statut);
+    }
+
+    public List<LivreurStats> statsParLivreur() {
+        return statsDAO.statsParLivreur();
     }
 }

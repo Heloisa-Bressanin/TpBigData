@@ -1,0 +1,15 @@
+{
+  "name": "livraisons-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^2.18.4",
+    "nuxt": "^3.13.2"
+  }
+}

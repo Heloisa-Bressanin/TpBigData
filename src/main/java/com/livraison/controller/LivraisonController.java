@@ -1,6 +1,7 @@
 package com.livraison.controller;
 
 import com.livraison.model.Livraison;
+import com.livraison.model.LivreurStats;
 import com.livraison.service.LivraisonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +76,12 @@ public class LivraisonController {
         return service.updateStatut(colisId, nouveauStatut)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // GET /api/livraisons/stats/par-livreur
+    @GetMapping("/stats/par-livreur")
+    public List<LivreurStats> statsParLivreur() {
+        return service.statsParLivreur();
     }
 
     // DELETE /api/livraisons/{id}
